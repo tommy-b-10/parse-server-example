@@ -1,5 +1,5 @@
 
-Parse.Cloud.define('hello', function(req, res) {
+Parse.Cloud.define("hello", async (req) => {
   var userId = req.params.userId;
   console.log(userId);
   var userQuery = new Parse.Query(Parse.User);
