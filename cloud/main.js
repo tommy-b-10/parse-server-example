@@ -2,8 +2,9 @@
 Parse.Cloud.define('hello', function(req, res) {
   var userId = req.params.userId;
   console.log(userId);
-  var queryUser = new Parse.Query(Parse.User);
-  queryUser.get(userId, { useMasterKey:true }).then(function(user) {
+  var userQuery = new Parse.Query(Parse.User);
+  userQuery.equalTo("objectId", userId);
+  userQuery.first({ useMasterKey:true }).then(function(user) {
       var key = user.get("apiKey");
       return key;
     })
