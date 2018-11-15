@@ -18,13 +18,7 @@ Parse.Cloud.define("beginStream", async (req) => {
   var userId = req.params.userId;
   var userQuery = new Parse.Query(Parse.User);
   userQuery.equalTo("objectId", userId);
-  let user = userQuery.first({ useMasterKey:true }).then(function(user) {
-    return user;
-  }).catch(function(error) {
-    console.error("Got an error " + error.code + " : " + error.message);
-    return "error";
-  });
-  if (user != "error") {
+  let result = userQuery.first({ useMasterKey:true }).then(function(user) {
     var Post = Parse.Object.extend("Post");
     var post = new Post();
     post.set("user", user);
@@ -40,7 +34,9 @@ Parse.Cloud.define("beginStream", async (req) => {
       return "error";
     });
     return result;
-  } else {
-    return "error";  
-  }
+  }).catch(function(error) {
+    console.error("Got an error " + error.code + " : " + error.message);
+    return "error";
+  });
+  return result;
 });
