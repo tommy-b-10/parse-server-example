@@ -19,7 +19,7 @@ Parse.Cloud.define("beginStream", async (req) => {
 	var streamKey = req.params.streamKey;
 	var userQuery = new Parse.Query(Parse.User);
 	userQuery.equalTo("objectId", userId);
-	let result = userQuery.first({ useMasterKey:true }).then(function(user) {
+	var result = userQuery.first({ useMasterKey:true }).then(function(user) {
 		//Find if there is an existing post and edit
 		var Post = Parse.Object.extend("Post");
 		var postQuery = new Parse.Query(Post);
@@ -36,11 +36,10 @@ Parse.Cloud.define("beginStream", async (req) => {
 			console.error("Got an error " + error.code + " : " + error.message);
 			return "error";
 		});
-		if (res.equalTo("success")) {
+		if (res === "success") {
 			return res;
 		} else {
 			//If no existing, then create new
-		    var Post = Parse.Object.extend("Post");
 		    var post = new Post();
 		    post.set("user", user);
 		    post.set("isVisible", true);
@@ -48,7 +47,7 @@ Parse.Cloud.define("beginStream", async (req) => {
 		    post.set("isVisibleAt", new Date());
 		    post.set("mediaType", "live");
 		    post.set("liveKey", streamKey);
-		    let result = post.save().then((post) => {
+		    var result = post.save().then((post) => {
 		      console.log("Created post with Id: " + post.id);
 		      return "success";
 		    }, (error) => {
@@ -69,7 +68,7 @@ Parse.Cloud.define("endStream", async (req) => {
   var streamKey = req.params.streamKey;
   var userQuery = new Parse.Query(Parse.User);
   userQuery.equalTo("objectId", userId);
-  let result = userQuery.first({ useMasterKey:true }).then(function(user) {
+  var result = userQuery.first({ useMasterKey:true }).then(function(user) {
     var Post = Parse.Object.extend("Post");
     var postQuery = new Parse.Query(Post);
     postQuery.equalTo("user", user);
