@@ -33,7 +33,7 @@ Parse.Cloud.define("beginStream", async (req) => {
     }, (error) => {
       console.log("Error creating post! " + error.message);
       return "error";
-    }
+    });
   }).catch(function(error) {
     console.error("Got an error " + error.code + " : " + error.message);
     return "error;
