@@ -28,8 +28,8 @@ Parse.Cloud.define("beginStream", async (req) => {
     var Post = Parse.Object.extend("Post");
     var post = new Post();
     post.set("user", user);
-    post.set("isVisible", True);
-    post.set("isLive", True);
+    post.set("isVisible", true);
+    post.set("isLive", true);
     post.set("isVisibleAt", new Date());
     post.set("mediaType", "live");
     let result = post.save().then((post) => {
