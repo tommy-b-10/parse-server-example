@@ -28,6 +28,7 @@ Parse.Cloud.define("beginStream", async (req) => {
 		postQuery.equalTo("mediaType", "live");
 		var res = postQuery.first({ useMasterKey:true }).then(function(post) {
 			post.set("isLive", true);
+			post.set("isVisible", true);s
 			post.save();
 			console.log("Edited post with Id: " + post.id);
 		      	return "success";
@@ -44,6 +45,7 @@ Parse.Cloud.define("beginStream", async (req) => {
 		    post.set("user", user);
 		    post.set("isVisible", true);
 		    post.set("isLive", true);
+			post.set("isVisible, true);
 		    post.set("isVisibleAt", new Date());
 		    post.set("mediaType", "live");
 		    post.set("liveKey", streamKey);
