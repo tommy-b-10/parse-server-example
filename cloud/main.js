@@ -27,34 +27,33 @@ Parse.Cloud.define("beginStream", async (req) => {
 		postQuery.equalTo("liveKey", streamKey);
 		postQuery.equalTo("mediaType", "live");
 		var res = postQuery.first({ useMasterKey:true }).then(function(post) {
-			post.set("isLive", true);
-			post.set("isVisible", true);
-			post.save();
-			console.log("Edited post with Id: " + post.id);
-		    return "success";
+			if (post != null) {
+				post.set("isLive", true);
+				post.set("isVisible", true);
+				post.save();
+				console.log("Edited post with Id: " + post.id);
+				return "success";
+			} else {
+				//If no existing, then create new
+				var post = new Post();
+				post.set("user", user);
+				post.set("isVisible", true);
+				post.set("isLive", true);
+				post.set("isVisibleAt", new Date());
+				post.set("mediaType", "live");
+				post.set("liveKey", streamKey);
+				var result = post.save().then((post) => {
+				  console.log("Created post with Id: " + post.id);
+				  return "success";
+				}, (error) => {
+				  console.log("Error creating post! " + error.message);
+				  return "error";
+				});
+			}
 		}).catch(function(error) {
 			console.error("Got an error " + error.code + " : " + error.message);
 			return "error";
 		});
-		if (res === "success") {
-			return res;
-		} else {
-			//If no existing, then create new
-		    var post = new Post();
-		    post.set("user", user);
-		    post.set("isVisible", true);
-		    post.set("isLive", true);
-		    post.set("isVisibleAt", new Date());
-		    post.set("mediaType", "live");
-		    post.set("liveKey", streamKey);
-		    var result = post.save().then((post) => {
-		      console.log("Created post with Id: " + post.id);
-		      return "success";
-		    }, (error) => {
-		      console.log("Error creating post! " + error.message);
-		      return "error";
-		    });
-		}
 		return result;
 	}).catch(function(error) {
 		console.error("Got an error " + error.code + " : " + error.message);
@@ -76,17 +75,17 @@ Parse.Cloud.define("endStream", async (req) => {
     postQuery.equalTo("isLive", true);
     postQuery.equalTo("mediaType", "live");
     var res = postQuery.find({ useMasterKey:true }).then(function(posts) {
-	for (var i = 0; i < posts.length; i++) {
-		var post = posts[i];
-		post.set("isLive", false);
-		post.unset("liveKey");
-		post.set("mediaType", "dvr");
-		post.save();
-     	}
-      return "success";
-		}).catch(function(error) {
-			console.error("Got an error " + error.code + " : " + error.message);
-      return "error";
+		for (var i = 0; i < posts.length; i++) {
+			var post = posts[i];
+			post.set("isLive", false);
+			post.unset("liveKey");
+			post.set("mediaType", "dvr");
+			post.save();
+		}
+		return "success";
+	}).catch(function(error) {
+		console.error("Got an error " + error.code + " : " + error.message);
+		return "error";
     });
     return res;
   }).catch(function(error) {
