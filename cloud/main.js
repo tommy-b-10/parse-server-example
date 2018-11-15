@@ -3,7 +3,7 @@ Parse.Cloud.define("verifyToken", async (req) => {
   var userId = req.params.userId;
   var userQuery = new Parse.Query(Parse.User);
   userQuery.equalTo("objectId", userId);
-  var res = userQuery.first({ useMasterKey:true }).then(function(user) {
+  userQuery.first({ useMasterKey:true }).then(function(user) {
     var key = user.get("apiKey");
     return key;
   })
@@ -11,8 +11,6 @@ Parse.Cloud.define("verifyToken", async (req) => {
     console.error("Got an error " + error.code + " : " + error.message);
     return "error";
   });
-  console.log("Here! " + res);
-  return res;
 });
 
 Parse.Cloud.define("beginStream", async (req) => {
