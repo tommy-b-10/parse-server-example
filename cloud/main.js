@@ -56,13 +56,13 @@ Parse.Cloud.define("endStream", async (req) => {
     postQuery.equalTo("isLive", true);
     postQuery.equalTo("mediaType", "live");
     var res = postQuery.find({ useMasterKey:true }).then(function(posts) {
-			for (var i = 0; i < posts.length; i++) {
-				var post = posts[i];
-				post.set("isLive", false);
-        post.unset("liveKey");
-        post.unset("mediaType", "dvr");
-        post.save();
-      }
+	for (var i = 0; i < posts.length; i++) {
+		var post = posts[i];
+		post.set("isLive", false);
+		post.unset("liveKey");
+		post.set("mediaType", "dvr");
+		post.save();
+     	}
       return "success";
 		}).catch(function(error) {
 			console.error("Got an error " + error.code + " : " + error.message);
