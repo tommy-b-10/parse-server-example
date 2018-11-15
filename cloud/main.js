@@ -36,6 +36,6 @@ Parse.Cloud.define("beginStream", async (req) => {
     });
   }).catch(function(error) {
     console.error("Got an error " + error.code + " : " + error.message);
-    return "error;
+    return "error";
   });
 });
