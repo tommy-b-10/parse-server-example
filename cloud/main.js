@@ -55,7 +55,7 @@ Parse.Cloud.define("beginStream", async (req) => {
 			console.error("Got an error " + error.code + " : " + error.message);
 			return "error";
 		});
-		return result;
+		return res;
 	}).catch(function(error) {
 		console.error("Got an error " + error.code + " : " + error.message);
 		return "error";
