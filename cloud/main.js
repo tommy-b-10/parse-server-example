@@ -31,15 +31,15 @@ Parse.Cloud.define("beginStream", async (req) => {
 			post.set("isVisible", true);
 			post.save();
 			console.log("Edited post with Id: " + post.id);
-		      	return "success";
+		    return "success";
 		}).catch(function(error) {
 			console.error("Got an error " + error.code + " : " + error.message);
 			return "error";
 		});
-		if (res == "success") {
+		if (res.equalTo("success")) {
 			return res;
 		} else {
-		  //If no existing, then create new
+			//If no existing, then create new
 		    var Post = Parse.Object.extend("Post");
 		    var post = new Post();
 		    post.set("user", user);
