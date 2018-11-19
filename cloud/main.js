@@ -84,7 +84,7 @@ Parse.Cloud.define("endStream", async (req) => {
 Parse.Cloud.define("addStreamDVR", async (req) => {
   var userId = req.params.userId;
   var streamKey = req.params.streamKey;
-  var vodURL = req.params.vodURL;
+  var vodURL = req.params.vodURL.split(".flv");
   var vodKey = streamKey + vodURL.split(streamKey)[1];
   var userQuery = new Parse.Query(Parse.User);
   userQuery.equalTo("objectId", userId);
