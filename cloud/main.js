@@ -85,7 +85,7 @@ Parse.Cloud.define("addStreamDVR", async (req) => {
   var userId = req.params.userId;
   var streamKey = req.params.streamKey;
   var vodURL = req.params.vodURL;
-  var vodKey = vodURL.split(streamKey)[1];
+  var vodKey = streamKey + vodURL.split(streamKey)[1];
   var userQuery = new Parse.Query(Parse.User);
   userQuery.equalTo("objectId", userId);
   var result = userQuery.first({ useMasterKey:true }).then(function(user) {
